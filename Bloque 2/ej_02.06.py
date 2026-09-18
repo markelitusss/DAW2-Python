@@ -1,0 +1,10 @@
+a = int(input("Introduce el primer número entero: "))
+b = int(input("Introduce el segundo número entero: "))
+
+print("Suma: ", a + b)
+print("Resta: ", a - b)
+print("Multiplicación: ", a * b)
+print("División entera: ", a // b)
+print("División real: ", a / b)
+print("Resto de la división: ", a % b)
+print("Potencia: ", a ** b)
