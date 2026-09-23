@@ -1,0 +1,14 @@
+Mi_funcion -> se debe utilizar snake_case para nombres de funciones
+    Corrección: Mi_funcion
+
+edadPersona -> se debe utilizar snake_case para nombres de variables
+    Corrección: edad_persona
+
+PIredondeado -> se debe utilizar mayúsculas y guiones bajos en las constantes
+    Corrección: PI_REDONDEADO
+
+usuario-Datos -> no se pueden usar guiones en variables
+    Corrección: usuario_datos
+
+Clase_alumno -> se debe utilizar PascalCase o camelCase para clases
+    Corrección: ClaseAlumno o claseAlumno
