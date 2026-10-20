@@ -15,21 +15,70 @@ pedidos = [
     {"cliente": "Pau", "producto": "teclado", "cantidad": 3},
 ]
 
-def procesar_pedido(pedido: dict) -> float:
-    if pedido["producto"] not in catalogo:
+def procesar_pedido(pedido: dict, catalogo: dict) -> float:
+    producto = pedido["producto"]
+    cantidad = pedido["cantidad"]
+    
+    if producto not in catalogo:
         raise ValueError("Producto no encontrado")
-    elif pedido["cantidad"] <= 0:
-        try:
-            int(pedido["cantidad"])
-        except Exception:
-            print("Cantidad inválida")
-        else:
-            raise ValueError("Cantidad inválida")
-    elif pedido["cantidad"] > catalogo[pedido["producto"]["stock"]]:
+    
+    if not isinstance(cantidad, int) or cantidad <= 0:
+        raise ValueError("Cantidad inválida")
+    
+    info = catalogo[producto]
+    if cantidad > info["stock"]:
         raise ValueError("Stock insuficiente")
-    else:
-        importe = pedido["cantidad"] * catalogo[pedido["producto"]["precio"]]
-        catalogo[pedido["producto"]["stock"]] -= pedido["cantidad"]
-        return importe
+    
+    importe = cantidad * info["precio"]
+    info["stock"] -= cantidad
+    return importe
         
-# WIP
+def recorrer_pedidos(pedidos: list) -> list:
+    # - Pedidos aceptados
+    # - Importe total
+    # - Pedidos rechazados
+    # - Rechazado por producto no encontrado
+    # - Rechazado por cantidad inválida
+    # - Rechazado por stock insuficiente
+    datos = [0, 0, 0, 0, 0, 0]
+    
+    for i in pedidos:
+        try:
+            datos[1] += procesar_pedido(i, catalogo)
+            datos[0] += 1
+            print("Pedido de", i["cliente"], ": aceptado")
+        except Exception as e:
+            datos[2] += 1
+            match str(e): # compara con el string del error
+                case "Producto no encontrado":
+                    datos[3] += 1
+                case "Cantidad inválida":
+                    datos[4] += 1
+                case "Stock insuficiente":
+                    datos[5] += 1
+            
+            print("Pedido de", i["cliente"], ": rechazado por", e)
+    
+    return datos
+
+def recorrer_catalogo(cat: dict):
+    print("\nStock final:")
+    
+    for producto, info in cat.items():
+        print(producto, "->", info["stock"])
+
+def main():
+    datos = recorrer_pedidos(pedidos)
+    
+    print("\nPedidos aceptados:", datos[0])
+    print("Importe total:", datos[1], "€")
+    print("Pedidos rechazados:", datos[2])
+    print("\tProducto no encontrado:", datos[3])
+    print("\tCantidad inválida:", datos[4])
+    print("\tStock insuficiente:", datos[5])
+    
+    recorrer_catalogo(catalogo)
+    
+if __name__ == "__main__":
+    main()
+    
